@@ -1,37 +1,85 @@
-package br.com.selecao.locadora.entity;
+package br.com.selecao.test.locadora.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Date;
+import java.util.Objects;
 
-@Data
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
-@EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = false)
 @Entity
 @Table(name = "TB_UNIDADE")
-@SequenceGenerator(name = "seq_unidade", sequenceName = "seq_unidade", allocationSize = 1)
+@SequenceGenerator(name = "seq_unidade")
 public class Unidade implements Serializable {
 
+    private static final long serialVersionUID = 1L;
+
+    public Unidade() {
+    }
+
+    public Unidade(String nome, Date createdAt, Date updatedAt) {
+        this.nome = nome;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+    }
+
     @Id
-    @Column(name = "ID")
+    @Column(name = "UNI_ID")
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "seq_unidade")
-    @EqualsAndHashCode.Include
     private Long id;
 
-    @Column(name = "NOME")
+    @Column(name = "UNI_NOME", length = 128, nullable = false)
     private String nome;
-}
 
+    @Column(name = "UNI_CREATED_AT", nullable = false)
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date createdAt;
+
+    @Column(name = "UNI_UPDATED_AT", nullable = false)
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date updatedAt;
+
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public Date getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public Date getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(Date updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Unidade unidade = (Unidade) o;
+        return id.equals(unidade.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
+}
